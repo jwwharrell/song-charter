@@ -3,14 +3,18 @@ import songInfo from '../test-data/blue-boy.json'
 
 export default class Charter extends Component {
     state = {
-        songInfo: {songInfo},
-        songKey: ''
+        songInfo: { songInfo },
+        songKey: '',
+        songMode: ''
     }
 
     componentDidMount() {
         const songKeyNum = this.state.songInfo.songInfo.track.key
+        const songModeNum = this.state.songInfo.songInfo.track.mode
         const songKey = this.keyConverter(songKeyNum)
-        this.setState({songKey})
+        const songMode = this.modeConverter(songModeNum)
+        console.log(songMode)
+        this.setState({ songKey, songMode })
     }
 
     keyConverter = (keyNum) => {
@@ -36,10 +40,18 @@ export default class Charter extends Component {
         return newKey
     }
 
+    modeConverter = (modeNum) => {
+        if (modeNum) {
+            return 'Major'
+        }
+        return 'Minor'
+
+    }
+
     render() {
         return (
             <div>
-                {this.state.songKey}
+                Song Key: {this.state.songKey} {this.state.songMode}
             </div>
         )
     }
