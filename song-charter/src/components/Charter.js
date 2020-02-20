@@ -3,18 +3,19 @@ import songInfo from '../test-data/blue-boy.json'
 
 export default class Charter extends Component {
     state = {
-        songInfo: { songInfo },
+        songInfo: songInfo,
         songKey: '',
-        songMode: ''
+        songMode: '',
+        bars: ''
     }
 
     componentDidMount() {
-        const songKeyNum = this.state.songInfo.songInfo.track.key
-        const songModeNum = this.state.songInfo.songInfo.track.mode
+        const songKeyNum = this.state.songInfo.track.key
+        const songModeNum = this.state.songInfo.track.mode
         const songKey = this.keyConverter(songKeyNum)
         const songMode = this.modeConverter(songModeNum)
-        console.log(songMode)
-        this.setState({ songKey, songMode })
+        const bars = this.state.songInfo.bars.length
+        this.setState({ songKey, songMode, bars })
     }
 
     keyConverter = (keyNum) => {
@@ -49,9 +50,16 @@ export default class Charter extends Component {
     }
 
     render() {
+        const barDivs = []
+        for (let i=0;i<this.state.bars;i++) {
+            barDivs.push(<div key={`bar-${i + 1}`} className='bar'>{i + 1}</div>)
+        }
         return (
             <div>
-                Song Key: {this.state.songKey} {this.state.songMode}
+                <h2>Song Key:</h2><p>{this.state.songKey} {this.state.songMode}</p>
+                <div className='bar-container'>
+                    {barDivs}
+                </div>
             </div>
         )
     }
