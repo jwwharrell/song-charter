@@ -6,16 +6,18 @@ export default class Charter extends Component {
         songInfo: songInfo,
         songKey: '',
         songMode: '',
-        bars: ''
+        bars: '',
+        segments: ''
     }
 
     componentDidMount() {
         const songKeyNum = this.state.songInfo.track.key
         const songModeNum = this.state.songInfo.track.mode
+        const bars = this.state.songInfo.bars
+        const segments = this.state.songInfo.segments
         const songKey = this.keyConverter(songKeyNum)
         const songMode = this.modeConverter(songModeNum)
-        const bars = this.state.songInfo.bars.length
-        this.setState({ songKey, songMode, bars })
+        this.setState({ songKey, songMode, bars, segments })
     }
 
     keyConverter = (keyNum) => {
@@ -49,16 +51,26 @@ export default class Charter extends Component {
 
     }
 
+    roundDecimal = (num) => {
+        return Math.floor(num * 100) / 100
+    }
+
     render() {
-        const barDivs = []
-        for (let i=0;i<this.state.bars;i++) {
-            barDivs.push(<div key={`bar-${i + 1}`} className='bar'>{i + 1}</div>)
+        const bars = this.state.bars
+        const renderedBars = []
+        for (let i = 0; i < bars.length; i++) {
+            renderedBars.push(
+                <div className='bar'>
+                    {this.roundDecimal(bars[i].start)} - {this.roundDecimal(bars[i].duration + bars[i].start)}
+                </div>
+            )
         }
+
         return (
             <div>
                 <h2>Song Key:</h2><p>{this.state.songKey} {this.state.songMode}</p>
                 <div className='bar-container'>
-                    {barDivs}
+                    {renderedBars}
                 </div>
             </div>
         )
