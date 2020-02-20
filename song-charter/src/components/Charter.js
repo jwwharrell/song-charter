@@ -57,14 +57,33 @@ export default class Charter extends Component {
 
     render() {
         const bars = this.state.bars
+        const segments = this.state.segments
         const renderedBars = []
         for (let i = 0; i < bars.length; i++) {
+            bars[i].segments = []
+            for (let j = 0; j < segments.length; j++) {
+                if (this.roundDecimal(segments[j].start) < this.roundDecimal(bars[i].duration + bars[i].start)) {
+                    bars[i].segments.push(segments[j])
+                }
+            }
             renderedBars.push(
-                <div className='bar'>
-                    {this.roundDecimal(bars[i].start)} - {this.roundDecimal(bars[i].duration + bars[i].start)}
+                <div key={`bar-${i+1}`} className='bar'>
+                    <h3>Bar {i + 1}</h3>
+                    <p>Timestamp: {this.roundDecimal(bars[i].start)} - {this.roundDecimal(bars[i].duration + bars[i].start)}</p>
+                    <div className='segments'>
+                        <h4>Segments</h4>
+                        <ul>
+                            {bars[i].segments.map((segment) => {
+                                return (
+                                    <li>{this.roundDecimal(segment.duration)}</li>
+                                )
+                            })}
+                        </ul>
+                    </div>
                 </div>
             )
         }
+        console.log(renderedBars)
 
         return (
             <div>
