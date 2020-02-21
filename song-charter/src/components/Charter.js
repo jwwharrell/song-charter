@@ -21,7 +21,6 @@ export default class Charter extends Component {
     }
 
     keyConverter = (keyNum) => {
-        let newKey
         const keyMap = {
             'C': 1,
             'C#/Db': 2,
@@ -36,12 +35,14 @@ export default class Charter extends Component {
             'A#/Bb': 11,
             'B': 12,
         }
-        const getKey = (object, value) => {
-            newKey = Object.keys(object).find(key => object[key] === value)
-        }
-        getKey(keyMap, keyNum)
+        let newKey = this.getKey(keyMap, keyNum)
         return newKey
     }
+
+    getKey = (object, value) => {
+        return Object.keys(object).find(key => object[key] === value)
+    }
+
 
     modeConverter = (modeNum) => {
         if (modeNum) {
@@ -51,9 +52,8 @@ export default class Charter extends Component {
 
     }
 
-    roundDecimal = (num) => {
-        return Math.floor(num * 100) / 100
-    }
+    roundDecimal = num => Math.floor(num * 100) / 100
+
 
     render() {
         const bars = this.state.bars
@@ -62,7 +62,7 @@ export default class Charter extends Component {
         for (let i = 0; i < bars.length; i++) {
             bars[i].segments = []
             for (let j = 0; j < segments.length; j++) {
-                if (this.roundDecimal(segments[j].start) < this.roundDecimal(bars[i].duration + bars[i].start)) {
+                if (this.roundDecimal(segments[j].start) >= this.roundDecimal(bars[i].start) && this.roundDecimal(segments[j].start) < this.roundDecimal(bars[i].duration + bars[i].start)) {
                     bars[i].segments.push(segments[j])
                 }
             }
@@ -75,7 +75,7 @@ export default class Charter extends Component {
                         <ul>
                             {bars[i].segments.map((segment) => {
                                 return (
-                                    <li>{this.roundDecimal(segment.duration)}</li>
+                                    <li>{this.roundDecimal(segment.start)} - {this.roundDecimal(segment.start + segment.duration)} | Note: {this.getKey(segment.pitches, 1)}</li>
                                 )
                             })}
                         </ul>
