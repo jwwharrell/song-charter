@@ -22,23 +22,22 @@ export default class Charter extends Component {
 
     keyConverter = (keyNum) => {
         const keyMap = {
-            'C': 1,
-            'C#/Db': 2,
-            'D': 3,
-            'D#/Eb': 4,
-            'E': 5,
-            'F': 6,
-            'F#/Gb': 7,
-            'G': 8,
-            'G#/Ab': 9,
-            'A': 10,
-            'A#/Bb': 11,
-            'B': 12,
+            'C': 0,
+            'C#/Db': 1,
+            'D': 2,
+            'D#/Eb': 3,
+            'E': 4,
+            'F': 5,
+            'F#/Gb': 6,
+            'G': 7,
+            'G#/Ab': 8,
+            'A': 9,
+            'A#/Bb': 10,
+            'B': 11,
         }
         let newKey = this.getKey(keyMap, keyNum)
         return newKey
     }
-
     getKey = (object, value) => {
         return Object.keys(object).find(key => object[key] === value)
     }
@@ -73,9 +72,11 @@ export default class Charter extends Component {
                     <div className='segments'>
                         <h4>Segments</h4>
                         <ul>
-                            {bars[i].segments.map((segment) => {
+                            {bars[i].segments.map((segment, ind) => {
+                                let note = this.getKey(segment.pitches, 1)
+                                let noteLetter = this.keyConverter(Number(note))
                                 return (
-                                    <li>{this.roundDecimal(segment.start)} - {this.roundDecimal(segment.start + segment.duration)} | Note: {this.getKey(segment.pitches, 1)}</li>
+                                    <li key={`bar-${i+1}-segment-${ind+1}`}>{this.roundDecimal(segment.start)} - {this.roundDecimal(segment.start + segment.duration)} | Note: {noteLetter}</li>
                                 )
                             })}
                         </ul>
@@ -83,7 +84,6 @@ export default class Charter extends Component {
                 </div>
             )
         }
-        console.log(renderedBars)
 
         return (
             <div>
