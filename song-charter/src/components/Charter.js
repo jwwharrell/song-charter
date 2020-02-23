@@ -73,10 +73,19 @@ export default class Charter extends Component {
                         <h4>Segments</h4>
                         <ul>
                             {bars[i].segments.map((segment, ind) => {
-                                let note = this.getKey(segment.pitches, 1)
-                                let noteLetter = this.keyConverter(Number(note))
+                                let filteredPitches = []
+                                segment.pitches.forEach((pitch, index) => {
+                                    if (pitch > 0.5) {
+                                        filteredPitches.push(index) 
+                                    }
+                                })
+                                let noteLetter = filteredPitches.map((note) => {
+                                    return this.keyConverter(Number(note))
+                                })
                                 return (
-                                    <li key={`bar-${i+1}-segment-${ind+1}`}>{this.roundDecimal(segment.start)} - {this.roundDecimal(segment.start + segment.duration)} | Note: {noteLetter}</li>
+                                    <li key={`bar-${i+1}-segment-${ind+1}`}>
+                                        {this.roundDecimal(segment.start)} - {this.roundDecimal(segment.start + segment.duration)} | Notes: {noteLetter.toString()}
+                                    </li>
                                 )
                             })}
                         </ul>
