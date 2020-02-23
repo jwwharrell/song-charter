@@ -75,7 +75,7 @@ export default class Charter extends Component {
                             {bars[i].segments.map((segment, ind) => {
                                 let filteredPitches = []
                                 segment.pitches.forEach((pitch, index) => {
-                                    if (pitch > 0.5) {
+                                    if (pitch > 0.7) {
                                         filteredPitches.push(index) 
                                     }
                                 })
