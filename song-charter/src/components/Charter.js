@@ -63,15 +63,28 @@ export default class Charter extends Component {
         const renderedBars = []
         for (let i = 0; i < bars.length; i++) {
             bars[i].segments = []
+            bars[i].beats = []
             for (let j = 0; j < segments.length; j++) {
                 if (this.roundDecimal(segments[j].start) >= this.roundDecimal(bars[i].start) && this.roundDecimal(segments[j].start) < this.roundDecimal(bars[i].duration + bars[i].start)) {
                     bars[i].segments.push(segments[j])
                 }
             }
+            for (let k = 0; k < beats.length; k++) {
+                if (this.roundDecimal(beats[k].start) >= this.roundDecimal(bars[i].start) && this.roundDecimal(beats[k].start) < this.roundDecimal(bars[i].duration + bars[i].start)) {
+                    bars[i].beats.push(beats[k])
+                }
+            }
             renderedBars.push(
-                <div key={`bar-${i+1}`} className='bar'>
+                <div key={`bar-${i + 1}`} className='bar'>
                     <h3>Bar {i + 1}</h3>
                     <p>Timestamp: {this.roundDecimal(bars[i].start)} - {this.roundDecimal(bars[i].duration + bars[i].start)}</p>
+                    <div>
+                        {bars[i].beats.map((beat, beatIndex) => {
+                            return (
+                                <span key={`bar-${i + 1}-beat-${beatIndex + 1}`}> Beat-{beatIndex + 1} </span>
+                        )
+                        })}
+                    </div>
                     <div className='segments'>
                         <h4>Segments</h4>
                         <ul>
@@ -79,14 +92,14 @@ export default class Charter extends Component {
                                 let filteredPitches = []
                                 segment.pitches.forEach((pitch, index) => {
                                     if (pitch > 0.7) {
-                                        filteredPitches.push(index) 
+                                        filteredPitches.push(index)
                                     }
                                 })
                                 let noteLetter = filteredPitches.map((note) => {
                                     return this.keyConverter(Number(note))
                                 })
                                 return (
-                                    <li key={`bar-${i+1}-segment-${ind+1}`}>
+                                    <li key={`bar-${i + 1}-segment-${ind + 1}`}>
                                         {this.roundDecimal(segment.start)} - {this.roundDecimal(segment.start + segment.duration)} | Notes: {noteLetter.toString()}
                                     </li>
                                 )
