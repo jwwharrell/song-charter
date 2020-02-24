@@ -7,6 +7,7 @@ export default class Charter extends Component {
         songKey: '',
         songMode: '',
         bars: '',
+        beats: '',
         segments: ''
     }
 
@@ -14,10 +15,11 @@ export default class Charter extends Component {
         const songKeyNum = this.state.songInfo.track.key
         const songModeNum = this.state.songInfo.track.mode
         const bars = this.state.songInfo.bars
+        const beats = this.state.songInfo.beats
         const segments = this.state.songInfo.segments
         const songKey = this.keyConverter(songKeyNum)
         const songMode = this.modeConverter(songModeNum)
-        this.setState({ songKey, songMode, bars, segments })
+        this.setState({ songKey, songMode, bars, beats, segments })
     }
 
     keyConverter = (keyNum) => {
@@ -56,6 +58,7 @@ export default class Charter extends Component {
 
     render() {
         const bars = this.state.bars
+        const beats = this.state.beats
         const segments = this.state.segments
         const renderedBars = []
         for (let i = 0; i < bars.length; i++) {
